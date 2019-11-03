@@ -2,6 +2,10 @@ const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 
+const users = require("./routes/api/users");
+
+app.use("/api/users", users);
+
 const db = require("./config/keys").mongoURI;   //  DB config
 mongoose.connect(db)
     .then(() => console.log("Mongodb Connected"))
