@@ -40,9 +40,6 @@ router.post("/register", (req, res) => {
         })
 })
 
-//  $route  POST    api/users/login
-//  @desc   返回 token jwt passport
-//  @access public
 router.post("/login", (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
