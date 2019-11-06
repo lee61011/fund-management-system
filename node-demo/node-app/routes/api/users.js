@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
-const User = require("../../models/User");
 const gravatar = require("gravatar");
+const jwt = require("jsonwebtoken");
+const User = require("../../models/User");
+const keys = require("../../config/keys");
 
 router.get("/test", (req, res) => {
     res.json({msg: "login works"})
@@ -54,7 +56,16 @@ router.post("/login", (req, res) => {
             bcrypt.compare(password, user.password)
                 .then(isMatch => {
                     if (isMatch) {
-                        res.json({msg: "success"}); //  登录成功，将来返回一个 token
+                        //  jwt.sign("规则","加密名字","过期时间","箭头函数")
+                        const rule = {id: user.id, name: user.name};
+                        jwt.sign(rule, keys.secretOrKey, {expiresIn: 3600}, (err, token) => {
+                            if (err) throw err;
+                            res.json({
+                                success: true,
+                                token: "mrwu" + token   //  这里的 mrwu 可以是其他自定义字符
+                            });
+                        })
+                        //  res.json({msg: "success"}); //  登录成功，将来返回一个 token
                     } else {
                         return res.status(400).json({password: "密码错误!"})
                     }
