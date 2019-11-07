@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const gravatar = require("gravatar");
 const jwt = require("jsonwebtoken");
+const passport = require("passport");
 const User = require("../../models/User");
 const keys = require("../../config/keys");
 
@@ -62,7 +63,7 @@ router.post("/login", (req, res) => {
                             if (err) throw err;
                             res.json({
                                 success: true,
-                                token: "mrwu" + token   //  这里的 mrwu 可以是其他自定义字符
+                                token: "Bearer" + token
                             });
                         })
                         //  res.json({msg: "success"}); //  登录成功，将来返回一个 token
@@ -71,6 +72,18 @@ router.post("/login", (req, res) => {
                     }
                 })
         })
+})
+
+//  $route  GET api/users/current
+//  @desc   return  current user
+//  @access Private
+//  router.get("./current", "验证 token", (req, res) => {})
+router.get("/current", passport.authenticate("jwt", { session: false }), (req, res) => {
+    res.json({
+        id: req.user.id,
+        name: req.user.name,
+        email: req.user.email
+    });
 })
 
 module.exports = router;
