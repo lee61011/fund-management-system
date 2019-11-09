@@ -5,8 +5,10 @@ const passport = require("passport");
 const app = express();
 
 const users = require("./routes/api/users");
+const profiles = require("./routes/api/profiles");
 
 app.use("/api/users", users);
+app.use("/api/profiles", profiles);
 //  使用 body-parser 中间件
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
