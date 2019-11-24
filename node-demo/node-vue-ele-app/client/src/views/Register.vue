@@ -45,6 +45,30 @@ export default {
                 password: '',
                 password2: '',
                 identity: ''
+            },
+            rules: {
+                name: [
+                    {
+                        required: true,
+                        message: "用户名不能为空",
+                        trigger: "blur"
+                    },
+                    {
+                        min: 2,
+                        max: 30,
+                        message: "长度在2到30个",
+                        trigger: "blur"
+                    }
+                ],
+                email: [
+                    {
+                        type: 'email',
+                        required: true,
+                        message: ''
+                    }
+                ],
+                password: [],
+                password2: []
             }
         }
     }
