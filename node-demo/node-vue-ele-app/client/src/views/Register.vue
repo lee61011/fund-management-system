@@ -38,6 +38,13 @@ export default {
     name: "register",
     components: {},
     data(){
+        var validatePass2 = (rule, value, callback) => {
+            if (value !== this.registerUser.password) {
+                callback(new Error('两次输入密码不一致!'));
+            } else {
+                callback();
+            }
+        };
         return {
             registerUser: {
                 name: '',
@@ -64,14 +71,55 @@ export default {
                     {
                         type: 'email',
                         required: true,
-                        message: ''
+                        message: '邮箱格式不正确',
+                        trigger: 'blur'
                     }
                 ],
-                password: [],
-                password2: []
+                password: [
+                    {
+                        required: true,
+                        message: '密码不能为空',
+                        trigger: 'blur'
+                    },
+                    {
+                        min: 6,
+                        max: 30,
+                        message: '长度在6到30之间',
+                        trigger: 'blur'
+                    }
+                ],
+                password2: [
+                    {
+                        required: true,
+                        message: '确认密码不能为空',
+                        trigger: 'blur'
+                    },
+                    {
+                        min: 6,
+                        max: 30,
+                        message: '长度在6到30之间',
+                        trigger: 'blur'
+                    },
+                    {
+                        validator: validatePass2,
+                        trigger: 'blur'
+                    }
+                ]
             }
         }
-    }
+    },
+    methods: {
+        submitForm(formName) {
+            this.$refs[formName].validate(valid => {
+                if (valid) {
+                    alert('submit!');
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+        }
+    },
 }
 </script>
 
