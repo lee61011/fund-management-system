@@ -64,11 +64,13 @@ export default {
                 if (valid) {
                     this.$axios.post('/api/users/login', this.loginUser)
                         .then(res => {
-                            console.log(res);
+                            // console.log(res);
                             //  token
+                            const { token } = res.data;
+                            //  存储到 localStorage 中
+                            localStorage.setItem('eleToken', token);
+                            this.$router.push('/index');
                         });
-                    
-                    this.$router.push('/index');
                 }
             });
         }
